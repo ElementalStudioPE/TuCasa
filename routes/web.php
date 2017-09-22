@@ -38,3 +38,41 @@ Route::get('/blog', function () {
 Route::get('/contacto', function () {
     return view('contacto');
 })->name('contacto');
+
+
+
+
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
+Route::get('/logout-ess-admin', function () {
+
+    Auth::logout();
+
+    return redirect()->route('login');
+
+})->name('logout');
+
+Route::post('/login/post', 'LoginController@post')->name('login.post');
+
+Route::post('/form/post', 'PrincipalController@post_form')->name('form.post');
+
+
+Route::group(['prefix' => 'administrador', 'middleware' => 'auth'], function () {
+
+    include_once 'admin.php';
+
+});
+
+
+
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
+
+Route::get('/admin/login', function(){
+	return redirect()->route('login');
+});
